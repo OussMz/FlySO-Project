@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: portal-deployment
+  namespace: default
+  labels:
+    app: portal-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: portal-service
+  template:
+    metadata:
+      labels:
+        app: portal-service
+    spec:
+      initContainers:
+      - name: wait-for-postgres
+        image: busybox:1.36
+        command: ['sh', '-c', 'until nc -z postgres-service 5432; do echo "Waiting for PostgreSQL to be ready..."; sleep 2; done;']
+
+      - name: run-migrations
+        image: oussamamz/flyso-portal:latest
+        command: ["flask", "db", "upgrade"]
+        envFrom:
+        - secretRef:
+            name: portal-secret
+
+      containers:
+        - name: portal-service
+          image: oussamamz/flyso-portal:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 5555
+          env:
+            - name: FLASK_APP
+              value: "run.py"
+            - name: SHARED_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secret
+                  key: SHARED_SECRET_KEY
+            - name: SQLALCHEMY_DATABASE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secret
+                  key: SQLALCHEMY_DATABASE_URI
+            - name: PROCESSING_SERVICE_URL
+              valueFrom:
+                secretKeyRef:
+                  name: portal-secret
+                  key: PROCESSING_SERVICE_URL
+
+      
+            

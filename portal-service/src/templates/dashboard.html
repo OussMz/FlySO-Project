@@ -1,0 +1,108 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    {% if g.current_user.role == 'admin' %}
+        <div class="dashboard-header">
+            <h1>Aviation Admissions Dashboard - Phase 1 Screening</h1>
+        </div>
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Application ID</th>
+                        <th>Candidate Name</th>
+                        <th>Age</th>
+                        <th>Medical Class</th>
+                        <th>GPA</th>
+                        <th>Flight Hours</th>
+                        <th>Application Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="applications-table-body">
+                    {% for app in applications %}
+                    <tr >
+                        <td>{{ app.id }}</td>
+                        <td>{{ app.full_name }}</td>
+                        <td>{{ app.age }}</td>
+                        <td>{{ app.medical_certificate }}</td>
+                        <td>{{ app.gpa }}</td>
+                        <td>{{ app.flight_hours }}</td>
+                        <td>
+                            <span class="status-badge status-{{ app.status | lower }}">
+                                {{ app.status }}
+                            </span>
+                        </td>
+                        <td class="actions">
+                                {% if app.status == "submitted" %}
+                                <button class="btn btn-success btn-accept" data-app-id="{{ app.id }}" type="button">Accept Application</button>
+                                <button class="btn btn-danger btn-reject" data-app-id="{{ app.id }}" type="button">Reject Application</button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 2rem;">No applications submitted yet.</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="dashboard-header">
+            <h1>Welcome back, {{ g.current_user.username }}.</h1>
+            {% if application %}
+                <div>
+                    <span class="status-badge status-{{ application.status | lower }}">
+                        Application Status: <span style="color: yellow">{{ application.status }}</span>
+                    </span>
+                </div>
+            {% else %}
+                <div>
+                    <span class="status-badge status-pending">
+                        No application submitted yet
+                    </span>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if application %}
+            <div class="data-summary">
+                <h2>Entered Data Summary</h2>
+                <ul class="data-list">
+                    <li>
+                        <span class="label">Full Name</span>
+                        <span class="value">{{ application.full_name }}</span>
+                    </li>
+                    <li>
+                        <span class="label">Age</span>
+                        <span class="value">{{ application.age }}</span>
+                    </li>
+                    <li>
+                        <span class="label">Medical Class</span>
+                        <span class="value">{{ application.medical_certificate }}</span>
+                    </li>
+                    <li>
+                        <span class="label">GPA</span>
+                        <span class="value">{{ application.gpa }}</span>
+                    </li>
+                    <li>
+                        <span class="label">Flight Hours</span>
+                        <span class="value">{{ application.flight_hours }}</span>
+                    </li>
+                </ul>
+            </div>
+        {% else %}
+            <div class="card">
+                <p>You haven't submitted an application yet. Click the button below to get started!</p>
+                <a href="/apply" class="btn btn-primary" style="margin-top: 1rem;">Submit Application</a>
+            </div>
+        {% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block script%}
+    <script src="{{ url_for("static", filename= "dashboard.js") }}"></script>
+{% endblock script%}

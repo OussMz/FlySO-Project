@@ -1,0 +1,50 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="form-container">
+        <h2 class="section-title" style="text-align: left; margin-bottom: 2rem;">Initial Screening Application</h2>
+        <form id="application-form">
+            <fieldset>
+                <legend>Candidate Information</legend>
+                <div class="form-grid-two-col">
+                    <div class="form-group">
+                        <label for="full-name">Full Name</label>
+                        <input type="text" id="full-name" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gpa">Grade Average (GPA)</label>
+                        <input type="number" id="gpa" class="form-control" step="0.01" min="0" max="4" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medical-certificate">Medical Certificate Status</label>
+                        <select id="medical-certificate" class="form-control" required>
+                            <option value="">Select an option</option>
+                            <option value="Class 1">Class 1</option>
+                            <option value="Class 2">Class 2</option>
+                            <option value="None">None</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="age">Age</label>
+                        <input type="number" id="age" class="form-control" min="18" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="flight-hours">Logged Flight Hours</label>
+                        <input type="number" id="flight-hours" class="form-control" min="0" value="0" required>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="hidden-message" id="hidden-msg"></div>
+            <button type="submit" class="btn btn-primary" id="submission-btn" style="width: 100%;">Submit Application for Verification</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block script%}
+    <script src="{{ url_for("static", filename= "apply.js") }}"></script>
+{% endblock script%}

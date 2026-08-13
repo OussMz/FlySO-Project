@@ -1,0 +1,56 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlySo - Cadet Pilot Program</title>
+    <link rel="icon" type="image/png" href="https://flysoassetsstorage.blob.core.windows.net/assets/Logo.png">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <a href="/" class="logo">
+                <img src="https://flysoassetsstorage.blob.core.windows.net/assets/Logo.png" alt="FlySo Logo" class="logo-img">
+            </a>
+            <nav>
+                <ul>
+                    {% if (g.current_user and g.current_user.role=="normalUser") or not g.current_user %}
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/details">Program Details</a></li>
+                    <li><a href="/apply">Apply Now</a></li>
+                    {% endif %}
+                    {% if not g.current_user %}
+                        <li><a href="/login">Login/Register</a></li>
+                    {% else %}
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/logout" id="logout-link">Logout</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="flash-messages">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 FlySo Cadet Pilot Program. All rights reserved.</p>
+    </footer>
+    <script src="{{ url_for("static", filename= "base.js") }}"></script>
+    {% block script%}
+    {% endblock script%}
+</body>
+</html>
