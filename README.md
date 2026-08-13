@@ -19,6 +19,8 @@ The application is deployed on **Azure Kubernetes Service (AKS)** using containe
 * **Background Worker:** Asynchronous Python Processing Service
 * **Serverless Execution:** Secure serverless function endpoints (automated decision/notification emails)
 * **Orchestration & Cloud:** Azure Kubernetes Service (AKS), Docker, Azure Load Balancer
+* **Cloud-Based Static Asset Storage:**
+   Implemented cloud-based Object Storage (Azure Blob Storage) for external static assets—specifically hosting the application logo to decouple media assets from the web container filesystem and ensure fast, scalable asset delivery.
 
 ---
 
