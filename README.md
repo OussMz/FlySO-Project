@@ -21,6 +21,9 @@ The application is deployed on **Azure Kubernetes Service (AKS)** using containe
 * **Orchestration & Cloud:** Azure Kubernetes Service (AKS), Docker, Azure Load Balancer
 * **Cloud-Based Static Asset Storage:**
    Implemented cloud-based Object Storage (Azure Blob Storage) for external static assets—specifically hosting the application logo to decouple media assets from the web container filesystem and ensure fast, scalable asset delivery.
+* **Automated Serverless Email Notification Engine:**
+* Triggered automatically upon administrative action (application acceptance or rejection).
+* Decoupled from the primary application server using a serverless execution layer (`email sender`), preventing email sending delays from blocking the web portal's user interface.
 
 ---
 
