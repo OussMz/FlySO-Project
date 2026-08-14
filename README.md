@@ -24,7 +24,12 @@ The application is deployed on **Azure Kubernetes Service (AKS)** using containe
 
 ---
 
+> 🔒 **Role-Based Dashboard:** The web application dynamically adapts its UI depending on the logged-in user:
+> - **Applicants:** Can submit and track candidate applications.
+> - **Admins:** Can inspect, accept, or reject incoming applications.
 ## 📁 Repository Structure
+
+---
 
 ├── email sender (serverless component)/   # Serverless email dispatch service
 │   ├── api/                              # Serverless API logic
